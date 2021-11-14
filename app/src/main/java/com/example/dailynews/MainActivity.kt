@@ -2,6 +2,7 @@ package com.example.dailynews
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -117,17 +118,18 @@ class MainActivity : AppCompatActivity() {
                 var newsModal = response.body()
                 PBLoading.visibility = View.GONE
                 var articles = newsModal?.articles
-                for (i in 0 until articles!!.size) {
-                    articlesArrayList.add(
-                        Articles(
-                            articles[i].title,
-                            articles[i].description,
-                            articles[i].urlToImage,
-                            articles[i].url,
-                            articles[i].content
+
+                    for (i in 0 until articles!!.size) {
+                        articlesArrayList.add(
+                            Articles(
+                                articles[i].title,
+                                articles[i].description,
+                                articles[i].urlToImage,
+                                articles[i].url,
+                                articles[i].content
+                            )
                         )
-                    )
-                }
+                    }
                 newsRVAdapter.notifyDataSetChanged()
             }
 
