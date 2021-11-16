@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     app:cardBackgroundColor="@color/grey"
+    android:id="@+id/idNewsCardView"
     app:cardCornerRadius="4dp">
 
     <RelativeLayout
@@ -41,6 +43,16 @@
             android:text="Sub Heading"
             android:textColor="@color/white"
             />
+
+        <ImageButton
+            android:id="@+id/idShareButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="150dp"
+            android:background="#0000ffff"
+            android:src="@drawable/ic_share"
+            tools:ignore="SpeakableTextPresentCheck" />
 
 
     </RelativeLayout>

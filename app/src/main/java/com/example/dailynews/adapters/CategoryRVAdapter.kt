@@ -13,13 +13,17 @@ import com.squareup.picasso.Picasso
 
 class CategoryRVAdapter(
     private var CategoryArrayList: ArrayList<CategoryRVModal>,
-    private var context: Context
+    private var listener: CategoriesItemClicked
 ) : RecyclerView.Adapter<CategoryRVAdapter.CategoryViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.categories_rv_item, parent, false)
-        return CategoryViewHolder(view)
+        val viewHolder = CategoryViewHolder(view)
+        view.setOnClickListener {
+            listener.OnCategoryClicked(CategoryArrayList[viewHolder.adapterPosition])
+        }
+        return viewHolder
     }
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
@@ -37,4 +41,7 @@ class CategoryRVAdapter(
         val categoryIV: ImageView = itemView.findViewById(R.id.idIVCategory)
     }
 
+    interface CategoriesItemClicked {
+        fun OnCategoryClicked(item: CategoryRVModal)
+    }
 }

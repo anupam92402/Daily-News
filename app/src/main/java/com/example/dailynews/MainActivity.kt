@@ -1,10 +1,13 @@
 package com.example.dailynews
 
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dailynews.adapters.CategoryRVAdapter
 import com.example.dailynews.adapters.NewsRVAdapter
@@ -12,32 +15,40 @@ import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NewsRVAdapter.NewsItemClicked,
+    CategoryRVAdapter.CategoriesItemClicked {
 
     lateinit var articlesArrayList: ArrayList<Articles>
     lateinit var categoryRVModalArrayList: ArrayList<CategoryRVModal>
     lateinit var newsRVAdapter: NewsRVAdapter
     lateinit var categoryRVAdapter: CategoryRVAdapter
+    var currentCategory: String = "All"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         articlesArrayList = ArrayList()
         categoryRVModalArrayList = ArrayList()
-        newsRVAdapter = NewsRVAdapter(articlesArrayList)
+        newsRVAdapter = NewsRVAdapter(articlesArrayList, this,this)
         categoryRVAdapter = CategoryRVAdapter(categoryRVModalArrayList, this)
         idRVNews.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = newsRVAdapter
         }
         idRVCategories.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity,LinearLayoutManager.HORIZONTAL,false)
+            layoutManager =
+                LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
             adapter = categoryRVAdapter
         }
         getCategories()
         getNews("All")
         newsRVAdapter.notifyDataSetChanged()
+        idRefreshLayout.setOnRefreshListener {
+            getNews(currentCategory)
+            idRefreshLayout.isRefreshing = false
+        }
     }
 
     private fun getCategories() {
@@ -56,19 +67,19 @@ class MainActivity : AppCompatActivity() {
         categoryRVModalArrayList.add(
             CategoryRVModal(
                 "Science",
-                "https://images.unsplash.com/photo-1597589827307-d393da1520d2?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NjZ8fHNjaWVuY2V8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60"
+                "https://media.istockphoto.com/photos/pharmacist-conducts-experiment-with-dried-hemp-picture-id1220314846?b=1&k=20&m=1220314846&s=170667a&w=0&h=VdMRQkc6bLQMiG7qXYZaCHso8k8wxmg3ixqc3kxPD_A="
             )
         )
         categoryRVModalArrayList.add(
             CategoryRVModal(
                 "Sports",
-                "https://images.unsplash.com/photo-1587280501635-68a0e82cd5ff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8c3BvcnRzfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60"
+                "https://media.istockphoto.com/photos/silhouette-action-sport-picture-id1272269793?b=1&k=20&m=1272269793&s=170667a&w=0&h=xie_NP8GQ6LFpiA0WLqoVUF7y2wyebpCJDQ4wJwPy40="
             )
         )
         categoryRVModalArrayList.add(
             CategoryRVModal(
                 "General",
-                "https://images.unsplash.com/photo-1494059980473-813e73ee784b?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8Z2VuZXJhbHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60"
+                "https://images.unsplash.com/photo-1637066272370-ad13c034cc2d?ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxNHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60"
             )
         )
         categoryRVModalArrayList.add(
@@ -119,17 +130,17 @@ class MainActivity : AppCompatActivity() {
                 PBLoading.visibility = View.GONE
                 var articles = newsModal?.articles
 
-                    for (i in 0 until articles!!.size) {
-                        articlesArrayList.add(
-                            Articles(
-                                articles[i].title,
-                                articles[i].description,
-                                articles[i].urlToImage,
-                                articles[i].url,
-                                articles[i].content
-                            )
+                for (i in 0 until articles!!.size) {
+                    articlesArrayList.add(
+                        Articles(
+                            articles[i].title,
+                            articles[i].description,
+                            articles[i].urlToImage,
+                            articles[i].url,
+                            articles[i].content
                         )
-                    }
+                    )
+                }
                 newsRVAdapter.notifyDataSetChanged()
             }
 
@@ -137,6 +148,17 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity, "Failed to load News", Toast.LENGTH_LONG).show()
             }
         })
+    }
+
+    override fun onItemClicked(item: Articles) {
+        val builder = CustomTabsIntent.Builder()
+        val customTabsIntent = builder.build()
+        customTabsIntent.launchUrl(this, Uri.parse(item.url))
+    }
+
+    override fun OnCategoryClicked(item: CategoryRVModal) {
+        getNews(item.category)
+        currentCategory = item.category
     }
 
 }
