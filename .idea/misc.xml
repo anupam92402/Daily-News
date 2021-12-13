@@ -3,7 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/projects/Daily News/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/projects/Daily News/app/src/main/res/drawable/custom_toolbar_theme.xml" value="0.24444444444444444" />
+        <entry key="..\:/projects/Daily News/app/src/main/res/drawable/ic_share.xml" value="0.24444444444444444" />
+        <entry key="..\:/projects/Daily News/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/projects/Daily News/app/src/main/res/layout/activity_splash_screen.xml" value="0.25416666666666665" />
         <entry key="..\:/projects/Daily News/app/src/main/res/layout/categories_rv_item.xml" value="0.25416666666666665" />
         <entry key="..\:/projects/Daily News/app/src/main/res/layout/news_rv_item.xml" value="0.25416666666666665" />
       </map>

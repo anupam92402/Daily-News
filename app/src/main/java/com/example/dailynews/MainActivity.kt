@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity(), NewsRVAdapter.NewsItemClicked,
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         articlesArrayList = ArrayList()
         categoryRVModalArrayList = ArrayList()
-        newsRVAdapter = NewsRVAdapter(articlesArrayList, this,this)
+        newsRVAdapter = NewsRVAdapter(articlesArrayList, this, this)
         categoryRVAdapter = CategoryRVAdapter(categoryRVModalArrayList, this)
         idRVNews.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
@@ -117,11 +117,10 @@ class MainActivity : AppCompatActivity(), NewsRVAdapter.NewsItemClicked,
             .baseUrl(Base_URL)
             .build()
         val retrofitApi = retrofit.create(RetrofitApi::class.java)
-        val call: Call<NewsModal>
-        if (category.equals("All")) {
-            call = retrofitApi.getAllNews(url)
+        val call: Call<NewsModal> = if (category.equals("All")) {
+            retrofitApi.getAllNews(url)
         } else {
-            call = retrofitApi.getNewsByCategory(categoryUrl)
+            retrofitApi.getNewsByCategory(categoryUrl)
         }
         call.enqueue(object : Callback<NewsModal> {
 

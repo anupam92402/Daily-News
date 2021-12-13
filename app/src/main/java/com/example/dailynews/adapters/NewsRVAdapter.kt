@@ -16,7 +16,8 @@ import com.squareup.picasso.Picasso
 
 class NewsRVAdapter(
     private var ArticlesArraylist: ArrayList<Articles>,
-    private var listener: NewsItemClicked,var context:Context
+    private var listener: NewsItemClicked,
+    var context: Context
 ) :
     RecyclerView.Adapter<NewsRVAdapter.NewsViewHolder>() {
 
@@ -37,7 +38,7 @@ class NewsRVAdapter(
         holder.shareButton.setOnClickListener {
             val shareIntent = Intent()
             shareIntent.action = Intent.ACTION_SEND
-            shareIntent.type="text/plain"
+            shareIntent.type = "text/plain"
             shareIntent.putExtra(Intent.EXTRA_TEXT, "Hey checkout this news ${articles.url}")
             context.startActivity(shareIntent)
         }
@@ -51,7 +52,7 @@ class NewsRVAdapter(
         val titleTV: TextView = itemView.findViewById(R.id.idTVNewsHeading)
         val subtitleTV: TextView = itemView.findViewById(R.id.idTVSubTitle)
         val newsIV: ImageView = itemView.findViewById(R.id.idIVNews)
-        val shareButton : ImageButton = itemView.findViewById(R.id.idShareButton)
+        val shareButton: ImageButton = itemView.findViewById(R.id.idShareButton)
     }
 
     interface NewsItemClicked {
